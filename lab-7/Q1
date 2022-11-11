@@ -1,0 +1,116 @@
+// Q1. Implementation of Inorder, Preorder, and Postorder Trraversal using stacks (Iterative method)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node
+{
+    int key;
+    struct Node *left;
+    struct Node *right;
+    Node(int value)
+    {
+        key = value;
+        left = right = NULL;
+    }
+};
+
+void iterativeInorder(Node *root)
+{
+    stack<Node *> st;
+    Node *curr = root;
+    while (curr != NULL || st.empty() == false)
+    {
+        while (curr != NULL)
+        {
+            st.push(curr);
+            curr = curr->left;
+        }
+        curr = st.top();
+        st.pop();
+        cout << curr->key << " ";
+        curr = curr->right;
+    }
+}
+
+void iterativePreorder(Node *root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    stack<Node *> Stack;
+    Stack.push(root);
+    while ((Stack.empty() == false))
+    {
+        /* code */
+        Node *curr = Stack.top();
+        cout << (curr->key) << " ";
+        Stack.pop();
+        if (curr->right != NULL)
+            Stack.push(curr->right);
+        if (curr->left != NULL)
+            Stack.push(curr->left);
+    }
+}
+
+void iterativePostorder(Node *root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+
+    stack<Node *> Stack3;
+    Stack3.push(root);
+
+    stack<int> Output;
+
+    while (Stack3.empty() == false)
+    {
+        Node *curr = Stack3.top();
+        Stack3.pop();
+
+        Output.push(curr->key);
+
+        if (curr->left)
+        {
+            Stack3.push(curr->left);
+        }
+
+        if (curr->right)
+        {
+            Stack3.push(curr->right);
+        }
+    }
+    while (Output.empty() == false)
+    {
+        cout << Output.top() << " ";
+        Output.pop();
+    }
+}
+
+int main()
+{
+
+    Node *root = new Node(26);
+    root->left = new Node(56);
+    root->right = new Node(66);
+    root->right->left = new Node(75);
+    root->right->right = new Node(80);
+    cout << "\nInorder traversal" << endl;
+    iterativeInorder(root);
+    cout << "\nPreorder traversal" << endl;
+    iterativePreorder(root);
+    cout << "\nPostorder traversal" << endl;
+    iterativePostorder(root);
+    return 0;
+}
+/*Output:
+Inorder traversal
+ 56 26 75 66 80
+ Preorder traversal
+ 26 56 66 75 80
+ Postorder traversal
+ 56 75 80 66 26
+*/
