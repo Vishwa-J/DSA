@@ -1,0 +1,88 @@
+//Q2: implement breadth first search on a tree ( not necessarily binary):
+// level order traversal of a binary tree (BFS : BREADTH FIRST SEARCH )
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class node {
+public:
+    int data;
+    node *left;
+    node *right;
+};
+
+// printing nodes present at current level
+
+void printcurrentLevel(node* root, int level)
+{
+    if (root == NULL)
+        return;
+    if (level == 1)                  //at level 1 , only root is present
+        cout << root->data<<" ";
+    else if (level > 1) {
+        printcurrentLevel(root->left, level - 1);
+        printcurrentLevel(root->right, level - 1);
+    }
+}
+
+void printLevel(node* root, int level);
+int height(node* node);
+node* newnode(int data);
+
+void printLevelOrder(node* root)
+{
+    int h = height(root);
+    int i;
+    for (i = 1; i <= h; i++)
+        printcurrentLevel(root, i);
+        cout<<endl;
+}
+
+// calculating the height of the tree = the farthest distance from root to the leaf nodes.
+int height(node* node)
+{
+    if (node == NULL)
+        return 0;
+    else {
+        
+        int Lheight = height(node->left);        //left subtree's height
+        int Rheight = height(node->right);    //right subtree's height
+
+        // we will take the greater height
+        if (Lheight > Rheight) {
+            return (Lheight + 1);
+        }
+        else {
+            return (Rheight + 1);
+        }
+    }
+}
+
+
+node* newnode(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    // to create a new node
+    temp->left = NULL;              
+    temp->right = NULL;
+
+    return (temp);
+}
+
+int main()
+{
+    node* root = newnode(45);
+    root->left = newnode(56);
+    root->right = newnode(63);
+    root->left->left = newnode(77);
+    root->left->right = newnode(85);
+
+    cout << "Level Order traversal of binary tree is as follows: ";
+    printLevelOrder(root);
+
+    return 0;
+}
+/*
+Level Order traversal of binary tree is as follows: 45 56 63 77 85
+*/
